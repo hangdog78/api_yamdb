@@ -23,5 +23,4 @@ class User(AbstractUser):
         verbose_name='User role',
         help_text='User role'
         )
-    
     objects = CustomUserManager()

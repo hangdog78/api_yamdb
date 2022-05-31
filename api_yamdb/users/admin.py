@@ -1,14 +1,15 @@
-from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
+from django.contrib import admin
 
 from .models import User
 
 
 class CustomUserAdmin(UserAdmin):
     list_display = (
-        'username', 'email', 'role', 'first_name', 'last_name', 'is_staff',
-        )
-    
+        'username', 'email', 'role', 'first_name',
+        'last_name', 'is_staff',
+    )
+
     fieldsets = (
         (None, {
             'fields': ('username', 'password', 'role')
@@ -20,7 +21,7 @@ class CustomUserAdmin(UserAdmin):
             'fields': (
                 'is_active', 'is_staff', 'is_superuser',
                 'groups', 'user_permissions'
-                )
+            )
         }),
         ('Important dates', {
             'fields': ('last_login', 'date_joined')
@@ -38,11 +39,12 @@ class CustomUserAdmin(UserAdmin):
             'fields': (
                 'is_active', 'is_staff', 'is_superuser',
                 'groups', 'user_permissions'
-                )
+            )
         }),
         ('Important dates', {
             'fields': ('last_login', 'date_joined')
         }),
     )
+
 
 admin.site.register(User, CustomUserAdmin)

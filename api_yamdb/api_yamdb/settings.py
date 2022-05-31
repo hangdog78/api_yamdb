@@ -103,3 +103,15 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static/'),)
+
+USER = 1
+MODERATOR = 2
+ADMIN = 3
+SUPERUSER = 4
+
+ROLE_CHOICES = (
+    (USER, 'user'),
+    (MODERATOR, 'moderator'),
+    (ADMIN, 'admin'),
+    (SUPERUSER, 'superuser'),
+    )

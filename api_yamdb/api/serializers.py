@@ -9,20 +9,4 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = '__all__'
-        extra_kwargs = {
-            'email': {
-                'validators': [
-                    UniqueValidator(
-                        queryset=User.objects.all()
-                        )
-                    ]
-                },
-            'username': {
-                'validators': [
-                    UniqueValidator(
-                        queryset=User.objects.all()
-                        )
-                    ]
-                }
-            
-            }
+        

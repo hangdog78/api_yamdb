@@ -3,24 +3,19 @@ from django.db import models
 
 from django.conf import settings
 
-class CustomUserManager(BaseUserManager):
-    def create_superuser(self, email, password, **kwargs):
-        user = self.model(email=email,
-                          is_staff=True,
-                          is_superuser=True,
-                          role = settings.SUPERUSER,
-                          **kwargs)
-        user.set_password(password)
-        user.save()
-        return user
-      
 
 class User(AbstractUser):
     
-    role = models.PositiveSmallIntegerField(
+    bio = models.TextField(
+        'Биография',
+        blank=True,
+    ) 
+    role = models.CharField(
         choices=settings.ROLE_CHOICES,
-        null=False,
+        max_length=20,
+        blank=False,
         verbose_name='User role',
-        help_text='User role'
+        help_text='Describes users permissions',
+        default=settings.ROLES['user']
         )
-    objects = CustomUserManager()
+    

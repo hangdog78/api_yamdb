@@ -132,14 +132,10 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static/'),)
 
 # User roles description
 
-USER = 1
-MODERATOR = 2
-ADMIN = 3
-SUPERUSER = 4
-
 ROLE_CHOICES = (
-    (USER, 'user'),
-    (MODERATOR, 'moderator'),
-    (ADMIN, 'admin'),
-    (SUPERUSER, 'superuser'),
+    ('user', 'user'),
+    ('moderator', 'moderator'),
+    ('admin','admin'),
     )
+
+ROLES=dict(ROLE_CHOICES)

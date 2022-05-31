@@ -8,26 +8,29 @@ class RoleBasedPermission (permissions.BasePermission):
         allowed_user_roles = None
     
     def has_permission(self, request, view):
+        print (self.allowed_user_roles)
         if request.user.is_authenticated:
-            return request.user.role in self.allowed_user_roles
+            return (request.user.role in self.allowed_user_roles or
+                    request.user.is_superuser)
         return False
     
     def has_object_permission(self, request, view, obj):
         if request.user.is_authenticated:
-            return request.user.role in self.allowed_user_roles
+            return (request.user.role in self.allowed_user_roles or 
+                    request.user.is_superuser)
         return False
 
 
 class AdminPermission(RoleBasedPermission):
     def __init__(self):
-        self.allowed_user_roles = (settings.ADMIN, settings.SUPERUSER,)
+        self.allowed_user_roles = (settings.ROLES['admin'],)
 
     
 class UserPermission(RoleBasedPermission):
     def __init__(self):
-        self.allowed_user_roles = (settings.USER,)
+        self.allowed_user_roles = (settings.ROLES['user'],)
     
 
 class ModeratorPermission(RoleBasedPermission):
     def __init__(self):
-        self.allowed_user_roles = (settings.MODERATOR,)
+        self.allowed_user_roles = (settings.ROLES['moderator'],)

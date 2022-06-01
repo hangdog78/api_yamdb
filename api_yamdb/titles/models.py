@@ -1,9 +1,13 @@
-from unicodedata import category
+from datetime import date
 from django.db import models
+from django.core.exceptions import ValidationError
 
 
 class Category(models.Model):
-    name = models.CharField('Название категории', max_length=256, requires=True)
+    name = models.CharField('Название категории',
+                            max_length=256,
+                            required=True
+                            )
     slug = models.SlugField(unique=True, db_index=True)
 
     class Meta:
@@ -16,7 +20,7 @@ class Category(models.Model):
 
 
 class Genre(models.Model):
-    name = models.CharField('Название жанра', max_length=256, requires=True)
+    name = models.CharField('Название жанра', max_length=256, required=True)
     slug = models.SlugField(unique=True, db_index=True)
 
     class Meta:
@@ -28,12 +32,34 @@ class Genre(models.Model):
 
 
 class Title(models.Model):
-    name = models.CharField('Название', max_length=256, requires=True)
+    def year_validation(self):
+        if self > date.today().year:
+            raise ValidationError(
+                ('Неверно указан год.'),
+                params={'value': self},
+            )
+    name = models.CharField('Название', max_length=256, required=True)
     slug = models.SlugField(unique=True, db_index=True)
-    description =
-    category = 
-    genre = 
-    date = 
+    description = models.CharField(
+        max_length=200,
+        blank=True,
+        null=True,
+    )
+    category = models.ForeignKey(
+        Category,
+        required=True,
+        on_delete=models.SET_NULL,
+        related_name='titles',
+        verbose_name='Категория'
+    )
+    genre = models.ManyToManyField(
+        Genre,
+        related_name='titles',
+        verbose_name='Жанр'
+    )
+    year = models.IntegerField(
+        validators=(year_validation,),
+    )
 
     class Meta:
         ordering = ['name']

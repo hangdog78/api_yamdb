@@ -1,8 +1,4 @@
 from django.db import models
-<<<<<<< HEAD
-
-# Create your models here.
-=======
 from django.core.validators import MaxValueValidator, MinValueValidator
 
 
@@ -59,4 +55,3 @@ class Comment(models.Model):
         verbose_name = 'Комментарий'
         verbose_name_plural = 'Комментарии'
         ordering = ['pub_date']
->>>>>>> reviews

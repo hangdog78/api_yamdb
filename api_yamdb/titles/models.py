@@ -6,7 +6,7 @@ from django.core.exceptions import ValidationError
 class Category(models.Model):
     name = models.CharField('Название категории',
                             max_length=256,
-                            required=True
+                            blank=False
                             )
     slug = models.SlugField(unique=True, db_index=True)
 
@@ -20,7 +20,7 @@ class Category(models.Model):
 
 
 class Genre(models.Model):
-    name = models.CharField('Название жанра', max_length=256, required=True)
+    name = models.CharField('Название жанра', max_length=256, blank=False)
     slug = models.SlugField(unique=True, db_index=True)
 
     class Meta:
@@ -38,8 +38,7 @@ class Title(models.Model):
                 ('Неверно указан год.'),
                 params={'value': self},
             )
-    name = models.CharField('Название', max_length=256, required=True)
-    slug = models.SlugField(unique=True, db_index=True)
+    name = models.CharField('Название', max_length=256, blank=False)
     description = models.CharField(
         max_length=200,
         blank=True,
@@ -47,14 +46,14 @@ class Title(models.Model):
     )
     category = models.ForeignKey(
         Category,
-        required=True,
         on_delete=models.SET_NULL,
         related_name='titles',
-        verbose_name='Категория'
+        verbose_name='Категория',
+        null=True
     )
     genre = models.ManyToManyField(
         Genre,
-        related_name='titles',
+        related_name='title',
         verbose_name='Жанр'
     )
     year = models.IntegerField(

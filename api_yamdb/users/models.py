@@ -1,9 +1,8 @@
 from django.contrib.auth.models import AbstractUser
+from django.core.validators import RegexValidator
 from django.db import models
 
 from django.conf import settings
-
-from .validators import UsernameValidator
 
 
 class User(AbstractUser):
@@ -20,12 +19,15 @@ class User(AbstractUser):
         help_text='Describes users permissions',
         default=settings.ROLES['user']
     )
-    username_validator = UsernameValidator
     username = models.CharField(
         'User name',
         max_length=150,
         unique=True,
-        validators=[username_validator],
+        validators=[RegexValidator(
+            regex=r'^[\w.@+-]+$',
+            message='Username must be Alphanumeric',
+            code='invalid_username')
+        ]
     )
     email = models.EmailField('Email', max_length=254, unique=True)
     confirmation_code = models.CharField(

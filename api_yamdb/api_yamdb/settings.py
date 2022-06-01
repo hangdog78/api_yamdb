@@ -111,7 +111,7 @@ SIMPLE_JWT = {
 }
 
 
-AUTH_USER_MODEL = 'users.User' 
+AUTH_USER_MODEL = 'users.User'
 
 # Internationalization
 
@@ -137,10 +137,10 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static/'),)
 ROLE_CHOICES = (
     ('user', 'user'),
     ('moderator', 'moderator'),
-    ('admin','admin'),
-    )
+    ('admin', 'admin'),
+)
 
-ROLES=dict(ROLE_CHOICES)
+ROLES = dict(ROLE_CHOICES)
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True

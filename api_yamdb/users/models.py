@@ -1,4 +1,4 @@
-from django.contrib.auth.models import AbstractUser, BaseUserManager
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 from django.conf import settings
@@ -7,11 +7,11 @@ from .validators import UsernameValidator
 
 
 class User(AbstractUser):
-    
+
     bio = models.TextField(
         'Биография',
         blank=True,
-    ) 
+    )
     role = models.CharField(
         choices=settings.ROLE_CHOICES,
         max_length=20,
@@ -19,7 +19,7 @@ class User(AbstractUser):
         verbose_name='User role',
         help_text='Describes users permissions',
         default=settings.ROLES['user']
-        )
+    )
     username_validator = UsernameValidator
     username = models.CharField(
         'User name',
@@ -33,11 +33,10 @@ class User(AbstractUser):
         max_length=100,
         null=True
     )
-    
-    
+
     def __str__(self):
         return str(self.username)
-    
+
     @property
     def is_admin(self):
         return self.role == settings.ROLES['admin'] or self.is_superuser
@@ -49,5 +48,3 @@ class User(AbstractUser):
     @property
     def is_user(self):
         return self.role == settings.ROLES['user']
-    
-

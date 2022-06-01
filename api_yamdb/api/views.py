@@ -3,13 +3,13 @@ import uuid
 from django.db import IntegrityError
 from django.shortcuts import get_object_or_404
 from django.core.mail import EmailMessage
-from rest_framework import filters, permissions, viewsets, status
+from rest_framework import filters, viewsets, status
 from rest_framework.decorators import action, api_view
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import AccessToken
-                                        
+
 from .permissions import IsAdminPermission
 from .serializers import (UserSerializer,
                           MeSerializer,
@@ -66,7 +66,7 @@ class UserViewSet(viewsets.ModelViewSet):
     filterset_fields = ('username')
     search_fields = ('username', )
     lookup_field = 'username'
-    
+
     @action(
         methods=['get', 'patch'],
         url_path='me',

@@ -62,7 +62,7 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
     pagination_class = PageNumberPagination
 
-    queryset = User.objects.all().order_by('username')
+    queryset = User.objects.all()
     filter_backends = (filters.SearchFilter, )
     search_fields = ('username', )
     lookup_field = 'username'

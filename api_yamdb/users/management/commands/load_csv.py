@@ -5,6 +5,7 @@ from django.conf import settings
 from django.core.management.base import BaseCommand
 from users.models import User
 from titles.models import Genre, Title, Category
+from reviews.models import Review, Comment
 
 
 class Command(BaseCommand):
@@ -91,7 +92,7 @@ class Command(BaseCommand):
             for row in reader:
                 record = Comment(
                     id=row['id'],
-                    review=Review.objects.get(id=row['review_id']),
+                    reviews=Review.objects.get(id=row['review_id']),
                     text=row['text'],
                     author=User.objects.get(id=row['author']),
                     pub_date=row['pub_date']

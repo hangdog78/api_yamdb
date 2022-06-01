@@ -12,7 +12,7 @@ class Command(BaseCommand):
         with open(data_dir + 'users.csv') as csvfile:
             reader = csv.DictReader(csvfile)
             for row in reader:
-                p = User(
+                record = User(
                     id=row['id'],
                     username=row['username'],
                     email=row['email'],
@@ -21,5 +21,5 @@ class Command(BaseCommand):
                     first_name=row['first_name'],
                     last_name=row['last_name']
                 )
-                p.save()
+                record.save()
         print('csv files loading completed.')

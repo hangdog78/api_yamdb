@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from users.models import User
+from titles.models import Genre, Category, Title
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -51,3 +52,40 @@ class TokenSerializer(serializers.Serializer):
 
     class Meta:
         fields = ('username', 'confirmation_code')
+
+
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        fields = ['name', 'slug']
+        model = Category
+
+
+class GenreSerializer(serializers.ModelSerializer):
+    class Meta:
+        fields = ['name', 'slug']
+        model = Genre
+
+
+class TitleSerializer(serializers.ModelSerializer):
+    category = CategorySerializer(read_only=True)
+    genre = GenreSerializer(read_only=True, many=True)
+    rating = serializers.IntegerField(
+        required=False
+    )
+
+    class Meta:
+        fields = '__all__'
+        model = Title
+
+
+class TitleCreateSerializer(serializers.ModelSerializer):
+    genre = serializers.SlugRelatedField(
+        slug_field='slug', many=True, queryset=Genre.objects.all()
+    )
+    category = serializers.SlugRelatedField(
+        slug_field='slug', many=False, queryset=Category.objects.all()
+    )
+
+    class Meta:
+        model = Title
+        fields = '__all__'

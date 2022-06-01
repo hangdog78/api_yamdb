@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import uuid
 
 from django.db import IntegrityError
@@ -84,8 +83,3 @@ class UserViewSet(viewsets.ModelViewSet):
             serializer.is_valid(raise_exception=True)
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
-=======
-from django.shortcuts import render
-
-# Create your views here.
->>>>>>> reviews

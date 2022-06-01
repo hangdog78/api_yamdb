@@ -93,6 +93,8 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 5,
     'DEFAULT_THROTTLE_CLASSES': [
         'rest_framework.throttling.UserRateThrottle',
         'rest_framework.throttling.AnonRateThrottle',
@@ -132,14 +134,17 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static/'),)
 
 # User roles description
 
-USER = 1
-MODERATOR = 2
-ADMIN = 3
-SUPERUSER = 4
-
 ROLE_CHOICES = (
-    (USER, 'user'),
-    (MODERATOR, 'moderator'),
-    (ADMIN, 'admin'),
-    (SUPERUSER, 'superuser'),
+    ('user', 'user'),
+    ('moderator', 'moderator'),
+    ('admin','admin'),
     )
+
+ROLES=dict(ROLE_CHOICES)
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'api.yamdb.2022@gmail.com'
+EMAIL_HOST_PASSWORD = 'api_yamdb2022'
+EMAIL_PORT = 587

@@ -3,6 +3,8 @@ import uuid
 from django.db import IntegrityError
 from django.shortcuts import get_object_or_404
 from django.core.mail import EmailMessage
+from django_filters.rest_framework import DjangoFilterBackend
+
 from rest_framework import filters, viewsets, status
 from rest_framework.decorators import action, api_view
 from rest_framework.permissions import IsAuthenticated
@@ -10,12 +12,19 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import AccessToken
 
-from .permissions import IsAdminPermission
+from .mixins import CreateListDestroyMixin
+
+from .permissions import IsAdminPermission, IsAdminOrReadOnly
 from .serializers import (UserSerializer,
                           MeSerializer,
                           SignUpSerializer,
-                          TokenSerializer)
+                          TokenSerializer,
+                          CategorySerializer,
+                          GenreSerializer,
+                          TitleSerializer,
+                          TitleCreateSerializer)
 from users.models import User
+from titles.models import Category, Genre, Title
 
 
 @api_view(['POST'])
@@ -83,3 +92,34 @@ class UserViewSet(viewsets.ModelViewSet):
             serializer.is_valid(raise_exception=True)
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class CategoryViewSet(CreateListDestroyMixin):
+    queryset = Category.objects.all().order_by('-id')
+    pagination_class = PageNumberPagination
+    serializer_class = CategorySerializer
+    permission_classes = [IsAdminOrReadOnly]
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('=name',)
+
+
+class GenreViewSet(CreateListDestroyMixin):
+    queryset = Genre.objects.all().order_by('-id')
+    pagination_class = PageNumberPagination
+    serializer_class = GenreSerializer
+    permission_classes = [IsAdminOrReadOnly]
+    filter_backends = (DjangoFilterBackend,)
+    search_fields = ('=name',)
+
+
+class TitleViewSet(viewsets.ModelViewSet):
+    queryset = Title.objects.all()
+    pagination_class = PageNumberPagination
+    permission_classes = [IsAdminOrReadOnly]
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    search_fields = ('=name',)
+
+    def get_serializer_class(self):
+        if self.action in ('create', 'update', 'partial_update'):
+            return TitleCreateSerializer
+        return TitleSerializer

@@ -8,7 +8,10 @@ class Category(models.Model):
                             max_length=256,
                             blank=False
                             )
-    slug = models.SlugField(unique=True, db_index=True)
+    slug = models.SlugField('Уникальный URL',
+                            max_length=50,
+                            unique=True,
+                            db_index=True)
 
     class Meta:
         ordering = ['name']

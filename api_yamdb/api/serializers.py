@@ -94,7 +94,7 @@ class TitleCreateSerializer(serializers.ModelSerializer):
 
 
 class CommentSerializer(serializers.ModelSerializer):
-    review = serializers.SlugRelatedField(
+    reviews = serializers.SlugRelatedField(
         slug_field='text',
         read_only=True
     )

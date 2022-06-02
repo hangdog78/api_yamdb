@@ -30,7 +30,7 @@ class Command(BaseCommand):
                     last_name=row['last_name']
                 )
                 record.save()
-        
+
         print('Loading' + CYELL + ' categoty.csv ' + CEND + 'file')
         with open(data_dir + 'category.csv', encoding="utf-8-sig") as csvfile:
             reader = csv.DictReader(csvfile)
@@ -66,11 +66,12 @@ class Command(BaseCommand):
                 record.save()
 
         print('Loading' + CYELL + ' genre_title.csv ' + CEND + 'file')
-        with open(data_dir + 'genre_title.csv', encoding="utf-8-sig") as csvfile:
+        with open(data_dir + 'genre_title.csv',
+                  encoding="utf-8-sig") as csvfile:
             reader = csv.DictReader(csvfile)
             for row in reader:
-                title=Title.objects.get(id=row['title_id'])
-                genre=Genre.objects.get(id=row['genre_id'])
+                title = Title.objects.get(id=row['title_id'])
+                genre = Genre.objects.get(id=row['genre_id'])
                 title.genre.set([genre])
                 title.save()
 
@@ -81,11 +82,12 @@ class Command(BaseCommand):
                 record = Review(
                     id=row['id'],
                     title=Title.objects.get(id=row['title_id']),
-                    text=row['text'], author=User.objects.get(id=row['author']),
+                    text=row['text'], author=User.objects.get(
+                        id=row['author']),
                     score=row['score'], pub_date=row['pub_date']
                 )
                 record.save()
-        
+
         print('Loading' + CYELL + ' comments.csv ' + CEND + 'file')
         with open(data_dir + 'comments.csv', encoding="utf-8-sig") as csvfile:
             reader = csv.DictReader(csvfile)

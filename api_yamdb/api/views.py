@@ -97,6 +97,7 @@ class CategoryViewSet(CreateListDestroyMixin):
     permission_classes = [IsAdminOrReadOnly]
     filter_backends = (filters.SearchFilter,)
     search_fields = ('=name',)
+    lookup_field = 'slug'
 
 
 class GenreViewSet(CreateListDestroyMixin):
@@ -106,14 +107,16 @@ class GenreViewSet(CreateListDestroyMixin):
     permission_classes = [IsAdminOrReadOnly]
     filter_backends = (DjangoFilterBackend,)
     search_fields = ('=name',)
+    lookup_field = 'slug'
 
 
 class TitleViewSet(viewsets.ModelViewSet):
     queryset = Title.objects.all()
     pagination_class = PageNumberPagination
     permission_classes = [IsAdminOrReadOnly]
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
-    search_fields = ('=name',)
+    filter_backends = (filters.SearchFilter, )
+    search_fields = ('name',)
+    filterset_fields = ('genre__slug', 'category__slug')
 
     def get_serializer_class(self):
         if self.action in ('create', 'update', 'partial_update'):

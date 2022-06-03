@@ -10,6 +10,7 @@ class IsAdminPermission(permissions.BasePermission):
 
 class IsAdminOrReadOnly(permissions.BasePermission):
     '''Права доступа админ или только просмотр'''
+
     def has_permission(self, request, view):
         if request.method in permissions.SAFE_METHODS:
             return True

@@ -15,13 +15,25 @@ from titles.models import Category, Genre, Title
 from users.models import User
 
 from .mixins import CreateListDestroyMixin
-from .permissions import (IsAdminModeratorOwnerOrReadOnly, IsAdminOrReadOnly,
-                          IsAdminPermission)
-from .serializers import (CategorySerializer, CommentSerializer,
-                          GenreSerializer, MeSerializer, ReviewSerializer,
-                          SignUpSerializer, TitleCreateSerializer,
-                          TitleSerializer, TokenSerializer, UserSerializer)
+from .permissions import (
+    IsAdminModeratorOwnerOrReadOnly,
+    IsAdminOrReadOnly,
+    IsAdminPermission
+)
+from .serializers import (
+    CategorySerializer,
+    CommentSerializer,
+    GenreSerializer,
+    MeSerializer,
+    ReviewSerializer,
+    SignUpSerializer,
+    TitleCreateSerializer,
+    TitleSerializer,
+    TokenSerializer,
+    UserSerializer
+)
 from .filters import TitleFilter
+
 
 @api_view(['POST'])
 def signup_post(request):
@@ -128,7 +140,7 @@ class ReviewViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAdminModeratorOwnerOrReadOnly]
 
     def get_queryset(self):
-        title = get_object_or_404(Title, pk=self.kwargs.get("title_id"))
+        title = get_object_or_404(Title, pk=self.kwargs.get('title_id'))
 
         return title.reviews.all()
 
@@ -143,7 +155,7 @@ class CommentViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAdminModeratorOwnerOrReadOnly]
 
     def get_queryset(self):
-        review = get_object_or_404(Review, pk=self.kwargs.get("review_id"))
+        review = get_object_or_404(Review, pk=self.kwargs.get('review_id'))
         return review.comments.all()
 
     def perform_create(self, serializer):

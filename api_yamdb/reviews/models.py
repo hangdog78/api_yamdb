@@ -44,14 +44,14 @@ class Review(models.Model):
 
 class Comment(models.Model):
     reviews = models.ForeignKey(Review, on_delete=models.CASCADE,
-                                related_name="comments")
+                                related_name='comments')
     author = models.ForeignKey(
         User, on_delete=models.CASCADE,
-        related_name="comments"
+        related_name='comments'
     )
     text = models.TextField()
     pub_date = models.DateTimeField(
-        "date published", auto_now_add=True, db_index=True
+        'date published', auto_now_add=True, db_index=True
     )
 
     class Meta:

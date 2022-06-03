@@ -9,7 +9,7 @@ from users.models import User
 
 
 class UserSerializer(serializers.ModelSerializer):
-    '''Сериализация данных пользователя'''
+    """Сериализация данных пользователя"""
     class Meta:
         model = User
         fields = ('username',
@@ -21,7 +21,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class MeSerializer(serializers.ModelSerializer):
-    '''Сериализация данных пользователя для эндпоинта me'''
+    """Сериализация данных пользователя для эндпоинта me"""
     role = serializers.CharField(read_only=True)
 
     class Meta:
@@ -35,7 +35,7 @@ class MeSerializer(serializers.ModelSerializer):
 
 
 class SignUpSerializer(serializers.Serializer):
-    '''Сериализация для регистрации пользователя'''
+    """Сериализация для регистрации пользователя"""
     email = serializers.EmailField(max_length=254, required=True)
     username = serializers.CharField(max_length=150, required=True)
 
@@ -49,7 +49,7 @@ class SignUpSerializer(serializers.Serializer):
 
 
 class TokenSerializer(serializers.Serializer):
-    '''Сериализация для выдачи токена'''
+    """Сериализация для выдачи токена"""
     username = serializers.CharField(max_length=150, required=True)
     confirmation_code = serializers.CharField(required=True)
 
@@ -77,7 +77,13 @@ class TitleSerializer(serializers.ModelSerializer):
     )
 
     class Meta:
-        fields = ('id', 'name', 'year', 'rating', 'description', 'genre', 'category')
+        fields = ('id',
+                  'name',
+                  'year',
+                  'rating',
+                  'description',
+                  'genre',
+                  'category')
         model = Title
 
     def get_rating(self, obj):

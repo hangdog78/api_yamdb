@@ -21,7 +21,7 @@ from .serializers import (CategorySerializer, CommentSerializer,
                           GenreSerializer, MeSerializer, ReviewSerializer,
                           SignUpSerializer, TitleCreateSerializer,
                           TitleSerializer, TokenSerializer, UserSerializer)
-
+from .filters import TitleFilter
 
 @api_view(['POST'])
 def signup_post(request):
@@ -105,8 +105,8 @@ class GenreViewSet(CreateListDestroyMixin):
     pagination_class = PageNumberPagination
     serializer_class = GenreSerializer
     permission_classes = [IsAdminOrReadOnly]
-    filter_backends = (DjangoFilterBackend,)
-    search_fields = ('=name',)
+    filter_backends = (DjangoFilterBackend, filters.SearchFilter)
+    search_fields = ('name',)
     lookup_field = 'slug'
 
 
@@ -114,9 +114,8 @@ class TitleViewSet(viewsets.ModelViewSet):
     queryset = Title.objects.all()
     pagination_class = PageNumberPagination
     permission_classes = [IsAdminOrReadOnly]
-    filter_backends = (filters.SearchFilter, )
-    search_fields = ('name',)
-    filterset_fields = ('genre__slug', 'category__slug')
+    filter_backends = (DjangoFilterBackend, )
+    filterset_class = TitleFilter
 
     def get_serializer_class(self):
         if self.action in ('create', 'update', 'partial_update'):

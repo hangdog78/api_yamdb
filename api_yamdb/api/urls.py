@@ -16,9 +16,9 @@ api_v1_router.register(
     basename='comments')
 
 api_v1_router.register('users', UserViewSet, basename='users')
-api_v1_router.register(r'titles', TitleViewSet, basename='title')
-api_v1_router.register(r'categories', CategoryViewSet, basename='category')
-api_v1_router.register(r'genres', GenreViewSet, basename='genre')
+api_v1_router.register('titles', TitleViewSet, basename='title')
+api_v1_router.register('categories', CategoryViewSet, basename='category')
+api_v1_router.register('genres', GenreViewSet, basename='genre')
 
 urlpatterns = [
     path('v1/auth/token/', token_post),

@@ -1,7 +1,9 @@
 import uuid
+from django.conf import settings
 
 from django.core.mail import EmailMessage
 from django.db import IntegrityError
+from django.db.models import Avg
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters, status, viewsets
@@ -10,29 +12,18 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import AccessToken
+
 from reviews.models import Review
 from titles.models import Category, Genre, Title
 from users.models import User
-
-from .mixins import CreateListDestroyMixin
-from .permissions import (
-    IsAdminModeratorOwnerOrReadOnly,
-    IsAdminOrReadOnly,
-    IsAdminPermission
-)
-from .serializers import (
-    CategorySerializer,
-    CommentSerializer,
-    GenreSerializer,
-    MeSerializer,
-    ReviewSerializer,
-    SignUpSerializer,
-    TitleCreateSerializer,
-    TitleSerializer,
-    TokenSerializer,
-    UserSerializer
-)
 from .filters import TitleFilter
+from .mixins import CreateListDestroyMixin
+from .permissions import (IsAdminModeratorOwnerOrReadOnly, IsAdminOrReadOnly,
+                          IsAdminPermission)
+from .serializers import (CategorySerializer, CommentSerializer,
+                          GenreSerializer, MeSerializer, ReviewSerializer,
+                          SignUpSerializer, TitleCreateSerializer,
+                          TitleSerializer, TokenSerializer, UserSerializer)
 
 
 @api_view(['POST'])
@@ -56,7 +47,8 @@ def signup_post(request):
     user.save()
     email = EmailMessage('Confirmation code',
                          confirmation_code,
-                         to=[email])
+                         to=[email],
+                         from_email=settings.EMAIL_HOST_USER)
     email.send()
     return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -103,29 +95,29 @@ class UserViewSet(viewsets.ModelViewSet):
 
 
 class CategoryViewSet(CreateListDestroyMixin):
-    queryset = Category.objects.all().order_by('-id')
+    queryset = Category.objects.all()
     pagination_class = PageNumberPagination
     serializer_class = CategorySerializer
-    permission_classes = [IsAdminOrReadOnly]
+    permission_classes = (IsAdminOrReadOnly,)
     filter_backends = (filters.SearchFilter,)
     search_fields = ('=name',)
     lookup_field = 'slug'
 
 
 class GenreViewSet(CreateListDestroyMixin):
-    queryset = Genre.objects.all().order_by('-id')
+    queryset = Genre.objects.all()
     pagination_class = PageNumberPagination
     serializer_class = GenreSerializer
-    permission_classes = [IsAdminOrReadOnly]
+    permission_classes = (IsAdminOrReadOnly,)
     filter_backends = (DjangoFilterBackend, filters.SearchFilter)
     search_fields = ('name',)
     lookup_field = 'slug'
 
 
 class TitleViewSet(viewsets.ModelViewSet):
-    queryset = Title.objects.all()
+    queryset = Title.objects.annotate(rating=Avg('reviews__score'))
     pagination_class = PageNumberPagination
-    permission_classes = [IsAdminOrReadOnly]
+    permission_classes = (IsAdminOrReadOnly,)
     filter_backends = (DjangoFilterBackend, )
     filterset_class = TitleFilter
 

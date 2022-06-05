@@ -1,8 +1,6 @@
-from django.db.models import Avg
 from django.forms import ValidationError
 from django.shortcuts import get_object_or_404
 from rest_framework import serializers
-
 from reviews.models import Comment, Review
 from titles.models import Category, Genre, Title
 from users.models import User
@@ -40,8 +38,10 @@ class SignUpSerializer(serializers.Serializer):
     username = serializers.CharField(max_length=150, required=True)
 
     def validate(self, data):
-        if data['username'] == 'me':
-            raise serializers.ValidationError('Login -me- is prohibited.')
+        if data.get('username') == 'me':
+            raise serializers.ValidationError(
+                'Нельзя использовать логин -me-.'
+            )
         return data
 
     class Meta:
@@ -59,22 +59,20 @@ class TokenSerializer(serializers.Serializer):
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
-        fields = ['name', 'slug']
+        fields = ('name', 'slug')
         model = Category
 
 
 class GenreSerializer(serializers.ModelSerializer):
     class Meta:
-        fields = ['name', 'slug']
+        fields = ('name', 'slug')
         model = Genre
 
 
 class TitleSerializer(serializers.ModelSerializer):
     category = CategorySerializer(read_only=True)
     genre = GenreSerializer(read_only=True, many=True)
-    rating = serializers.SerializerMethodField(
-        required=False
-    )
+    rating = serializers.IntegerField()
 
     class Meta:
         fields = ('id',
@@ -85,12 +83,6 @@ class TitleSerializer(serializers.ModelSerializer):
                   'genre',
                   'category')
         model = Title
-
-    def get_rating(self, obj):
-        rating = obj.reviews.aggregate(Avg('score')).get('score__avg')
-        if not rating:
-            return None
-        return round(rating, 1)
 
 
 class TitleCreateSerializer(serializers.ModelSerializer):

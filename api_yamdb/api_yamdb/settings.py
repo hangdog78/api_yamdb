@@ -119,10 +119,14 @@ STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static/'),)
 
+USER = 'user'
+MODERATOR = 'moderator'
+ADMIN = 'admin'
+
 ROLE_CHOICES = (
-    ('user', 'user'),
-    ('moderator', 'moderator'),
-    ('admin', 'admin'),
+    (USER, 'user'),
+    (MODERATOR, 'moderator'),
+    (ADMIN, 'admin'),
 )
 
 ROLES = dict(ROLE_CHOICES)

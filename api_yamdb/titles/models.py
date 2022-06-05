@@ -14,7 +14,7 @@ class Category(models.Model):
                             db_index=True)
 
     class Meta:
-        ordering = ['name']
+        ordering = ('name', )
         verbose_name = 'Категория'
         verbose_name_plural = 'Категории'
 
@@ -61,10 +61,11 @@ class Title(models.Model):
     )
     year = models.IntegerField(
         validators=(year_validation,),
+        db_index=True,
     )
 
     class Meta:
-        ordering = ['name']
+        ordering = ('name', )
         verbose_name = 'Заголовок'
         verbose_name_plural = 'Заголовки'
 

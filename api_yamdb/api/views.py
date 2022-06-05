@@ -1,6 +1,6 @@
 import uuid
-from django.conf import settings
 
+from django.conf import settings
 from django.core.mail import EmailMessage
 from django.db import IntegrityError
 from django.db.models import Avg
@@ -100,7 +100,7 @@ class CategoryViewSet(CreateListDestroyMixin):
     serializer_class = CategorySerializer
     permission_classes = (IsAdminOrReadOnly,)
     filter_backends = (filters.SearchFilter,)
-    search_fields = ('=name',)
+    search_fields = ('name',)
     lookup_field = 'slug'
 
 
@@ -129,7 +129,7 @@ class TitleViewSet(viewsets.ModelViewSet):
 
 class ReviewViewSet(viewsets.ModelViewSet):
     serializer_class = ReviewSerializer
-    permission_classes = [IsAdminModeratorOwnerOrReadOnly]
+    permission_classes = (IsAdminModeratorOwnerOrReadOnly, )
 
     def get_queryset(self):
         title = get_object_or_404(Title, pk=self.kwargs.get('title_id'))
@@ -144,7 +144,7 @@ class ReviewViewSet(viewsets.ModelViewSet):
 
 class CommentViewSet(viewsets.ModelViewSet):
     serializer_class = CommentSerializer
-    permission_classes = [IsAdminModeratorOwnerOrReadOnly]
+    permission_classes = (IsAdminModeratorOwnerOrReadOnly, )
 
     def get_queryset(self):
         review = get_object_or_404(Review, pk=self.kwargs.get('review_id'))

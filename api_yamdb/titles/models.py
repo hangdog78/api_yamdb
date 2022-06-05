@@ -27,6 +27,7 @@ class Genre(models.Model):
     slug = models.SlugField(unique=True, db_index=True)
 
     class Meta:
+        ordering = ('name', )
         verbose_name = 'Жанр'
         verbose_name_plural = 'Жанры'
 
@@ -65,7 +66,7 @@ class Title(models.Model):
     )
 
     class Meta:
-        ordering = ('name', )
+
         verbose_name = 'Заголовок'
         verbose_name_plural = 'Заголовки'
 

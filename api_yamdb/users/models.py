@@ -1,8 +1,7 @@
+from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
 from django.db import models
-
-from django.conf import settings
 
 
 class User(AbstractUser):
@@ -19,6 +18,8 @@ class User(AbstractUser):
         help_text='Describes users permissions',
         default=settings.ROLES['user']
     )
+    first_name = models.CharField(max_length=150, blank=True)
+    last_name = models.CharField(max_length=150, blank=True)
     username = models.CharField(
         'User name',
         max_length=150,
